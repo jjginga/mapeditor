@@ -1,4 +1,4 @@
-package org.academiadecodigo.simplegraphics.pictures;
+package org.academiadecodigo.paparascii.pictures;
 
 public class Color
 {

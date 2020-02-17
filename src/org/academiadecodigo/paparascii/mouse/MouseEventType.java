@@ -1,4 +1,4 @@
-package org.academiadecodigo.simplegraphics.mouse;
+package org.academiadecodigo.paparascii.mouse;
 
 /**
  * The type of events supported by the Mouse

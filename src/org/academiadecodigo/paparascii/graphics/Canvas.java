@@ -1,4 +1,4 @@
-package org.academiadecodigo.simplegraphics.graphics;
+package org.academiadecodigo.paparascii.graphics;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;

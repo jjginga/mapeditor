@@ -1,4 +1,4 @@
-package org.academiadecodigo.simplegraphics.keyboard;
+package org.academiadecodigo.paparascii.keyboard;
 
 /**
  * The type of events supported by the Keyboard

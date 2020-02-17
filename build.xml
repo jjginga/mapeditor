@@ -9,7 +9,7 @@
         <property name="classes.dir" value="${build.dir}/classes" />
     </target>
 
-    <!-- Creates the build directories to hold JAR and Class files -->
+    <!-- Creates the build directories to hold JAR and org.academiadecodigo.paparascii.gridfiles -->
     <target name="prepare" description="Creates the build and classes directories" depends="init">
         <mkdir dir="${classes.dir}" />
     </target>

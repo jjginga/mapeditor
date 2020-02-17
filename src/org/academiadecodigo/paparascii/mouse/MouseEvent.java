@@ -1,4 +1,4 @@
-package org.academiadecodigo.simplegraphics.mouse;
+package org.academiadecodigo.paparascii.mouse;
 
 /**
  * Mouse event containing x and y coordinates

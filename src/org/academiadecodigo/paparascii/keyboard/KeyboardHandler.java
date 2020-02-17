@@ -1,4 +1,4 @@
-package org.academiadecodigo.simplegraphics.keyboard;
+package org.academiadecodigo.paparascii.keyboard;
 
 import java.awt.event.KeyEvent;
 

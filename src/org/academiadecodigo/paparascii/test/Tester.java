@@ -1,15 +1,15 @@
-package org.academiadecodigo.simplegraphics.test;
+package org.academiadecodigo.paparascii.test;
 
-import org.academiadecodigo.simplegraphics.graphics.*;
-import org.academiadecodigo.simplegraphics.keyboard.Keyboard;
-import org.academiadecodigo.simplegraphics.keyboard.KeyboardEvent;
-import org.academiadecodigo.simplegraphics.keyboard.KeyboardEventType;
-import org.academiadecodigo.simplegraphics.keyboard.KeyboardHandler;
-import org.academiadecodigo.simplegraphics.mouse.Mouse;
-import org.academiadecodigo.simplegraphics.mouse.MouseEvent;
-import org.academiadecodigo.simplegraphics.mouse.MouseEventType;
-import org.academiadecodigo.simplegraphics.mouse.MouseHandler;
-import org.academiadecodigo.simplegraphics.pictures.Picture;
+import org.academiadecodigo.paparascii.graphics.*;
+import org.academiadecodigo.paparascii.keyboard.Keyboard;
+import org.academiadecodigo.paparascii.keyboard.KeyboardEvent;
+import org.academiadecodigo.paparascii.keyboard.KeyboardEventType;
+import org.academiadecodigo.paparascii.keyboard.KeyboardHandler;
+import org.academiadecodigo.paparascii.mouse.Mouse;
+import org.academiadecodigo.paparascii.mouse.MouseEvent;
+import org.academiadecodigo.paparascii.mouse.MouseEventType;
+import org.academiadecodigo.paparascii.mouse.MouseHandler;
+import org.academiadecodigo.paparascii.pictures.Picture;
 
 public class Tester implements KeyboardHandler, MouseHandler {
 
