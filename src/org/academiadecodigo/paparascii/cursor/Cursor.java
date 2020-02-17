@@ -1,6 +1,6 @@
 package org.academiadecodigo.paparascii.cursor;
 
-import org.academiadecodigo.paparascii.Position;
+import org.academiadecodigo.paparascii.grid.Position;
 import org.academiadecodigo.paparascii.graphics.Color;
 import org.academiadecodigo.paparascii.graphics.Rectangle;
 import org.academiadecodigo.paparascii.grid.Grid;
@@ -122,31 +122,31 @@ public class  Cursor implements KeyboardHandler {
         return pos;
     }
 
-    public void setPainting() {
+    public void resetPainting() {
         if (isPainting){
             isPainting=false;
         }
     }
 
-    public void setClear() {
+    public void resetClear() {
         if(clear){
             clear=false;
         }
     }
 
-    public void setDeleting() {
+    public void resetDeleting() {
         if(isDeleting){
             isDeleting=false;
         }
     }
 
-    public void setSaving() {
+    public void resetSaving() {
         if(isSaving){
             isSaving=false;
         }
     }
 
-    public void setLoading() {
+    public void resetLoading() {
         if(isLoading){
             isLoading=false;
         }

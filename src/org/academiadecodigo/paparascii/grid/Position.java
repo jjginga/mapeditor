@@ -1,4 +1,4 @@
-package org.academiadecodigo.paparascii;
+package org.academiadecodigo.paparascii.grid;
 
 public class Position{
 
@@ -38,6 +38,6 @@ public class Position{
 
     @Override
     public String toString() {
-        return row+" "+column;
+        return column+" "+row;
     }
 }

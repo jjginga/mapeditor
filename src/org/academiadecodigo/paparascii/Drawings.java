@@ -1,8 +1,8 @@
 package org.academiadecodigo.paparascii;
 
 import org.academiadecodigo.paparascii.graphics.Rectangle;
+import org.academiadecodigo.paparascii.grid.Position;
 
-import java.io.*;
 import java.util.*;
 
 public class Drawings implements Iterable<Position>{
@@ -27,26 +27,13 @@ public class Drawings implements Iterable<Position>{
             positions.clear();
         }
 
-        public Set<Position> getSquares(){
-            return positions.keySet();
-        }
-
         public Iterator<Position> iterator(){
             return positions.keySet().iterator();
         }
 
-        public int size(){
-            return positions.size();
-        }
-
-
-
         public Rectangle getSquare(Position position){
             return positions.get(position);
         }
-
-
-
 
 }
 

@@ -4,12 +4,12 @@ import org.academiadecodigo.paparascii.graphics.Line;
 
 public class Grid extends Field {
 
-    private int cellSize=20;
+    private int cellSize=10;
     private Line[] verticalLines;
     private Line[] horizontalLines;
 
-    public Grid(int width, int heigth){
-        super(width, heigth);
+    public Grid(int width, int height){
+        super(width, height);
         verticalLines();
         horizontalLines();
         drawLines();

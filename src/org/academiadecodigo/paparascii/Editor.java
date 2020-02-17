@@ -2,7 +2,9 @@ package org.academiadecodigo.paparascii;
 
 import org.academiadecodigo.paparascii.cursor.Cursor;
 import org.academiadecodigo.paparascii.graphics.Rectangle;
+import org.academiadecodigo.paparascii.grid.Factory;
 import org.academiadecodigo.paparascii.grid.Grid;
+import org.academiadecodigo.paparascii.grid.Position;
 import org.academiadecodigo.paparascii.keyboard.Keyboard;
 import org.academiadecodigo.paparascii.keyboard.KeyboardEvent;
 import org.academiadecodigo.paparascii.keyboard.KeyboardEventType;
@@ -14,23 +16,25 @@ public class Editor {
     private Grid grid;
     private Cursor cursor;
     private Drawings drawings;
-    private SquareFactory squareFactory;
+    private Factory factory;
     private int delay = 200;
-    private String file_path="/Users/codecadet/joel/workspace/homework/map-editor/src/org/academiadecodigo/paparascii/memory1024";
+    private String file_path="resources/memory1024";
 
     public Editor(){
-        grid = new Grid(800, 800);
+        grid = new Grid(400, 400);
         cursor = new Cursor(grid.numberOfColumns()/2,grid.numberOfRows()/2,grid);
         drawings = new Drawings();
-        squareFactory = new SquareFactory(grid);
+        factory = new Factory(grid);
     }
-
 
     public void start() throws InterruptedException {
         grid.init();
         keyboardControls();
+
         while(true) {
+
             Thread.sleep(delay);
+
             if (cursor.isPainting()) {
                 paint();
             }
@@ -53,8 +57,6 @@ public class Editor {
         }
 
     }
-
-
 
     public void keyboardControls(){
 
@@ -106,14 +108,14 @@ public class Editor {
         KeyboardEvent eventLoad = new KeyboardEvent();
         eventLoad.setKey(KeyboardEvent.KEY_L);
         eventLoad.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
-        k.addEventListener(eventWipe);
+        k.addEventListener(eventLoad);
     }
 
     public void paint(){
 
-        Position pos = new Position(cursor.getPos());
-        drawings.add(pos, squareFactory.getSquare(cursor.getPos()));
-        cursor.setPainting();
+        Position pos = factory.getPosition(cursor.getPos());
+        drawings.add(pos, factory.getSquare(pos));
+        cursor.resetPainting();
         drawings.getSquare(pos).fill();
         System.out.println(pos);
 
@@ -125,7 +127,7 @@ public class Editor {
             drawings.getSquare(pos).delete();
         }
         drawings.wipe();
-        cursor.setClear();
+        cursor.resetClear();
 
 
     }
@@ -135,12 +137,12 @@ public class Editor {
             if (key.equals(cursor.getPos())){
                 drawings.getSquare(key).delete();
                 drawings.delete(key);
-                cursor.setDeleting();
+                cursor.resetDeleting();
                 return;
             }
         }
 
-        cursor.setDeleting();
+        cursor.resetDeleting();
     }
 
     public void save() {
@@ -153,7 +155,7 @@ public class Editor {
 
             bWriter.flush();
             bWriter.close();
-            cursor.setSaving();
+            cursor.resetSaving();
 
         } catch (IOException e) {
             System.out.println(e.getMessage());
@@ -165,7 +167,6 @@ public class Editor {
         clear();
 
         try{
-            System.out.println("fuck");
 
         BufferedReader bReader = new BufferedReader(new FileReader(file_path));
 
@@ -177,24 +178,22 @@ public class Editor {
         while((line = bReader.readLine()) != null) {
             values=line.split(" ");
             pos=new Position(Integer.parseInt(values[0]),Integer.parseInt(values[1]));
-            square = squareFactory.getSquare(pos);
+            square = factory.getSquare(pos);
             drawings.add(pos,square);
+        }
+        bReader.close();
+        cursor.resetLoading();
 
+        for (Position key : drawings) {
+            drawings.getSquare(key).fill();
         }
 
-        bReader.close();
-        cursor.setLoading();
 
 
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
     }
-
-
-
-
-
 
 
 }
