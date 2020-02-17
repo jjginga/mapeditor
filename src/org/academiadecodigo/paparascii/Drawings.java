@@ -2,6 +2,7 @@ package org.academiadecodigo.paparascii;
 
 import org.academiadecodigo.paparascii.graphics.Rectangle;
 
+import java.io.*;
 import java.util.*;
 
 public class Drawings implements Iterable<Position>{
@@ -39,9 +40,12 @@ public class Drawings implements Iterable<Position>{
         }
 
 
+
         public Rectangle getSquare(Position position){
             return positions.get(position);
         }
+
+
 
 
 }

@@ -17,6 +17,9 @@ public class  Cursor implements KeyboardHandler {
     private Grid grid;
     private boolean isPainting;
     private boolean clear;
+    private boolean isDeleting;
+    private boolean isSaving;
+    private boolean isLoading;
 
     public Cursor(int column, int row, Grid grid){
         pos = new Position(column,row);
@@ -80,7 +83,18 @@ public class  Cursor implements KeyboardHandler {
 
     public void clear(){
         clear=true;
-        System.out.println(clear);
+    }
+
+    public void delete(){
+        isDeleting=true;
+    }
+
+    public void save(){
+        isSaving=true;
+    }
+
+    public void load(){
+        isLoading=true;
     }
 
     public boolean isPainting() {
@@ -90,6 +104,18 @@ public class  Cursor implements KeyboardHandler {
 
     public boolean isClearing() {
         return clear;
+    }
+
+    public boolean isDeleting() {
+        return isDeleting;
+    }
+
+    public boolean isLoading() {
+        return isLoading;
+    }
+
+    public boolean isSaving() {
+        return isSaving;
     }
 
     public Position getPos() {
@@ -105,6 +131,24 @@ public class  Cursor implements KeyboardHandler {
     public void setClear() {
         if(clear){
             clear=false;
+        }
+    }
+
+    public void setDeleting() {
+        if(isDeleting){
+            isDeleting=false;
+        }
+    }
+
+    public void setSaving() {
+        if(isSaving){
+            isSaving=false;
+        }
+    }
+
+    public void setLoading() {
+        if(isLoading){
+            isLoading=false;
         }
     }
 
@@ -130,7 +174,15 @@ public class  Cursor implements KeyboardHandler {
             case KeyboardEvent.KEY_W:
                 clear();
                 break;
-
+            case KeyboardEvent.KEY_D:
+                delete();
+                break;
+            case KeyboardEvent.KEY_S:
+                save();
+                break;
+            case KeyboardEvent.KEY_L:
+                load();
+                break;
         }
 
     }

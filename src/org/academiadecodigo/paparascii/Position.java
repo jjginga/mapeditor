@@ -10,6 +10,11 @@ public class Position{
         this.row=row;
     }
 
+    public Position(Position pos){
+        this.column=pos.getColumn();
+        this.row=pos.getRow();
+    }
+
     public int getColumn() {
         return column;
     }
@@ -24,5 +29,15 @@ public class Position{
 
     public void moveRow(int dRow) {
         row += dRow;
+    }
+
+
+    public boolean equals(Position position) {
+        return (row==position.getRow() && column==position.getColumn());
+    }
+
+    @Override
+    public String toString() {
+        return row+" "+column;
     }
 }
