@@ -1,5 +1,7 @@
 package org.academiadecodigo.paparascii;
 
+import java.util.Objects;
+
 public class Position{
 
     private int column;
@@ -32,8 +34,20 @@ public class Position{
     }
 
 
-    public boolean equals(Position position) {
-        return (row==position.getRow() && column==position.getColumn());
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Position position = (Position) o;
+        return getColumn() == position.getColumn() &&
+                getRow() == position.getRow();
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(getColumn(), getRow());
     }
 
     @Override

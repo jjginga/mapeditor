@@ -12,6 +12,10 @@ public class Drawings implements Iterable<Position>{
             positions = new HashMap<>();
         }
 
+        public boolean hasKey(Position pos) {
+            return positions.containsKey(pos);
+        }
+
         public void add(Position position, Rectangle square){
             positions.put(position, square);
         }

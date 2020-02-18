@@ -2,11 +2,12 @@ package org.academiadecodigo.paparascii;
 
 import org.academiadecodigo.paparascii.simplegraphics.graphics.Line;
 import org.academiadecodigo.paparascii.simplegraphics.graphics.Rectangle;
+import org.academiadecodigo.paparascii.simplegraphics.graphics.Text;
 
 public class VisualGrid {
 
     public static final int PADDING = 10;
-    private int cellSize=10;
+    private int cellSize=20;
     private int width;
     private int height;
     private Rectangle canvas;
@@ -27,36 +28,43 @@ public class VisualGrid {
         drawLines();
     }
 
+
     public int getCellSize() {
         return cellSize;
     }
 
+    //Calculates number of Columns
     public int numberOfColumns(){
-        return (getWidth()/cellSize);
+        return (width/cellSize);
     }
 
+
+    //Calculates number of Rows
     public int numberOfRows(){
-        return (getHeight()/cellSize);
+        return (height/cellSize);
     }
 
+    //Creates vertical lines
     private void verticalLines(){
         int x = PADDING;
         verticalLines = new Line[numberOfColumns()-1];
 
         for (int i = 0; i<numberOfColumns()-1;i++){
-            verticalLines[i] = new Line(x+=cellSize , PADDING, x ,getHeight());
+            verticalLines[i] = new Line(x+=cellSize , PADDING, x ,height+PADDING);
         }
     }
 
+    //Creates horizontal lines
     private void horizontalLines(){
         int y = PADDING;
         horizontalLines = new Line[numberOfRows()-1];
 
         for (int i = 0; i<numberOfRows()-1;i++){
-            horizontalLines[i] = new Line(PADDING,y+=cellSize ,getWidth(), y);
+            horizontalLines[i] = new Line(PADDING,y+=cellSize ,width+PADDING, y);
         }
     }
 
+    //Draws lines
     private void drawLines(){
         for (Line horizontalLine : horizontalLines) {
             horizontalLine.draw();
@@ -67,15 +75,7 @@ public class VisualGrid {
         }
     }
 
-
-    public int getHeight() {
-        return height+PADDING;
-    }
-
-    public int getWidth() {
-        return width+PADDING;
-    }
-
+    //For auxiliary calculations
     public int columnToX(int column){
         return (PADDING+column*cellSize);
     }

@@ -12,6 +12,7 @@ import static org.academiadecodigo.paparascii.Cursor.Direction.STILL;
 
 public class  Cursor implements KeyboardHandler {
 
+    //PROPERTIES
     private Position pos;
     private Rectangle square;
     private VisualGrid visualGrid;
@@ -19,6 +20,8 @@ public class  Cursor implements KeyboardHandler {
     private Factory factory;
     private String file_path="resources/memory1024";
 
+
+    //CONSTRUCTOR
     public Cursor(int column, int row, VisualGrid visualGrid){
 
 
@@ -35,6 +38,9 @@ public class  Cursor implements KeyboardHandler {
 
     }
 
+
+
+    //METHODS TO MAKE THE CURSOR MOVE
     private void draw(int dColumn, int dRow){
         square.translate(visualGrid.getCellSize()*dColumn, visualGrid.getCellSize()*dRow);
         square.fill();
@@ -82,7 +88,14 @@ public class  Cursor implements KeyboardHandler {
 
         }
 
+    //METHODS FOR PICTURE EDITING
     private void paint(){
+
+        if(drawings.getSquare(pos)!=null){
+            if (drawings.hasKey(pos)) {
+                return;
+            }
+        }
 
         Position key = factory.getPosition(pos);
         drawings.add(key, factory.getSquare(pos));
@@ -103,16 +116,19 @@ public class  Cursor implements KeyboardHandler {
             if (key.equals(pos)){
                 drawings.getSquare(key).delete();
                 drawings.delete(key);
+                return;
             }
         }
     }
 
+    //SAVING AND LOADING
     private void save(){
         try {
 
             BufferedWriter bWriter = new BufferedWriter(new FileWriter(file_path, false));
-            for (Position position : drawings) {
-                bWriter.write(position.toString()+"\n");
+
+            for (Position key : drawings) {
+                bWriter.write(key.toString()+"\n");
             }
 
             bWriter.flush();
@@ -132,15 +148,16 @@ public class  Cursor implements KeyboardHandler {
 
             String line;
             String[] values;
-            Position pos;
+            Position posLoad;
             Rectangle square;
 
             while((line = bReader.readLine()) != null) {
                 values=line.split(" ");
-                pos=new Position(Integer.parseInt(values[0]),Integer.parseInt(values[1]));
-                square = factory.getSquare(pos);
-                drawings.add(pos,square);
+                posLoad=factory.getPosition(Integer.valueOf(values[0]),Integer.valueOf(values[1]));
+                square = factory.getSquare(posLoad);
+                drawings.add(posLoad,square);
             }
+
             bReader.close();
 
             for (Position key : drawings) {
@@ -153,18 +170,6 @@ public class  Cursor implements KeyboardHandler {
             System.out.println(e.getMessage());
         }
     }
-
-
-
-
-
-    /**Getter for the position**/
-    public Position getPos() {
-        return pos;
-    }
-
-
-
 
     @Override
     public void keyPressed(KeyboardEvent e) {
@@ -206,6 +211,8 @@ public class  Cursor implements KeyboardHandler {
 
     }
 
+
+    //Enum to update the position
     public enum Direction{
         UP(0,-1),
         DOWN(0,1),
