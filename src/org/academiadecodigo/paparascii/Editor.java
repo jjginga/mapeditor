@@ -3,7 +3,7 @@ package org.academiadecodigo.paparascii;
 import org.academiadecodigo.paparascii.cursor.Cursor;
 import org.academiadecodigo.paparascii.graphics.Rectangle;
 import org.academiadecodigo.paparascii.grid.Factory;
-import org.academiadecodigo.paparascii.grid.Grid;
+import org.academiadecodigo.paparascii.grid.VisualGrid;
 import org.academiadecodigo.paparascii.grid.Position;
 import org.academiadecodigo.paparascii.keyboard.Keyboard;
 import org.academiadecodigo.paparascii.keyboard.KeyboardEvent;
@@ -13,7 +13,7 @@ import java.io.*;
 
 public class Editor {
 
-    private Grid grid;
+    private VisualGrid visualGrid;
     private Cursor cursor;
     private Drawings drawings;
     private Factory factory;
@@ -21,44 +21,34 @@ public class Editor {
     private String file_path="resources/memory1024";
 
     public Editor(){
-        grid = new Grid(400, 400);
-        cursor = new Cursor(grid.numberOfColumns()/2,grid.numberOfRows()/2,grid);
+        visualGrid = new VisualGrid(400, 400);
+        cursor = new Cursor(visualGrid.numberOfColumns()/2, visualGrid.numberOfRows()/2, visualGrid);
         drawings = new Drawings();
-        factory = new Factory(grid);
+        factory = new Factory(visualGrid);
     }
 
     public void start() throws InterruptedException {
-        grid.init();
+        visualGrid.init();
         keyboardControls();
 
         while(true) {
 
             Thread.sleep(delay);
 
-            if (cursor.isPainting()) {
                 paint();
-            }
 
-            if (cursor.isDeleting()){
                 delete();
-            }
 
-            if (cursor.isClearing()) {
-                clear();
-            }
+                wipe();
 
-            if (cursor.isSaving()) {
                 save();
-            }
 
-            if (cursor.isLoading()){
                 load();
-            }
         }
 
     }
 
-    public void keyboardControls(){
+    private void keyboardControls(){
 
         Keyboard k = new Keyboard(cursor);
 
@@ -111,28 +101,42 @@ public class Editor {
         k.addEventListener(eventLoad);
     }
 
-    public void paint(){
+    private void paint(){
+
+        if (!cursor.isPainting()){
+            return;
+        }
 
         Position pos = factory.getPosition(cursor.getPos());
         drawings.add(pos, factory.getSquare(pos));
-        cursor.resetPainting();
         drawings.getSquare(pos).fill();
+
+        cursor.resetPainting();
         System.out.println(pos);
 
     }
 
-    public void clear(){
+    private void wipe(){
+
+        if(!cursor.isWiping()){
+            return;
+        }
 
         for (Position pos : drawings) {
             drawings.getSquare(pos).delete();
         }
         drawings.wipe();
-        cursor.resetClear();
+        cursor.resetWiping();
 
 
     }
 
-    public void delete(){
+    private void delete(){
+
+        if (!cursor.isDeleting()){
+            return;
+        }
+
         for (Position key : drawings) {
             if (key.equals(cursor.getPos())){
                 drawings.getSquare(key).delete();
@@ -145,7 +149,12 @@ public class Editor {
         cursor.resetDeleting();
     }
 
-    public void save() {
+    private void save() {
+
+        if(!cursor.isSaving()){
+            return;
+        }
+
         try {
 
             BufferedWriter bWriter = new BufferedWriter(new FileWriter(file_path, false));
@@ -162,9 +171,13 @@ public class Editor {
         }
     }
 
-    public void load() {
+    private void load() {
 
-        clear();
+        if(!cursor.isLoading()){
+            return;
+        }
+
+        wipe();
 
         try{
 

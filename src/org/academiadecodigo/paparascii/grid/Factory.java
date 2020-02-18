@@ -1,19 +1,17 @@
 package org.academiadecodigo.paparascii.grid;
 
 import org.academiadecodigo.paparascii.graphics.Rectangle;
-import org.academiadecodigo.paparascii.grid.Grid;
-import org.academiadecodigo.paparascii.grid.Position;
 
 public class Factory {
 
-    private Grid grid;
+    private VisualGrid visualGrid;
 
-    public Factory(Grid grid){
-        this.grid=grid;
+    public Factory(VisualGrid visualGrid){
+        this.visualGrid = visualGrid;
     }
 
     public Rectangle getSquare(Position position){
-        return new Rectangle(grid.columnToX(position.getColumn()), grid.rowToY(position.getRow()), grid.getCellSize(), grid.getCellSize());
+        return new Rectangle(visualGrid.columnToX(position.getColumn()), visualGrid.rowToY(position.getRow()), visualGrid.getCellSize(), visualGrid.getCellSize());
 
     }
 

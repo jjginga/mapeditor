@@ -3,7 +3,7 @@ package org.academiadecodigo.paparascii.cursor;
 import org.academiadecodigo.paparascii.grid.Position;
 import org.academiadecodigo.paparascii.graphics.Color;
 import org.academiadecodigo.paparascii.graphics.Rectangle;
-import org.academiadecodigo.paparascii.grid.Grid;
+import org.academiadecodigo.paparascii.grid.VisualGrid;
 import org.academiadecodigo.paparascii.keyboard.KeyboardEvent;
 import org.academiadecodigo.paparascii.keyboard.KeyboardHandler;
 
@@ -14,32 +14,37 @@ public class  Cursor implements KeyboardHandler {
 
     private Position pos;
     private Rectangle square;
-    private Grid grid;
+    private VisualGrid visualGrid;
     private boolean isPainting;
-    private boolean clear;
+    private boolean isWiping;
     private boolean isDeleting;
     private boolean isSaving;
     private boolean isLoading;
 
-    public Cursor(int column, int row, Grid grid){
+    public Cursor(int column, int row, VisualGrid visualGrid){
+
+        //get position from factory
+
         pos = new Position(column,row);
-        this.grid=grid;
-        square= new Rectangle(grid.columnToX(grid.numberOfColumns()/2), grid.rowToY(grid.numberOfRows()/2), grid.getCellSize(), grid.getCellSize());
+        this.visualGrid = visualGrid;
+
+        //get square from factory
+        square= new Rectangle(visualGrid.columnToX(visualGrid.numberOfColumns()/2), visualGrid.rowToY(visualGrid.numberOfRows()/2), visualGrid.getCellSize(), visualGrid.getCellSize());
         square.setColor(Color.GREEN);
         square.fill();
 
     }
 
-    public void draw(int dColumn, int dRow){
-        square.translate(grid.getCellSize()*dColumn, grid.getCellSize()*dRow);
+    private void draw(int dColumn, int dRow){
+        square.translate(visualGrid.getCellSize()*dColumn, visualGrid.getCellSize()*dRow);
         square.fill();
     }
 
-    public void hide(){
+    private void hide(){
         square.delete();
     }
 
-    public void move(Direction direction){
+    private void move(Direction direction){
        hide();
 
        direction=checkForEdges(direction);
@@ -49,10 +54,10 @@ public class  Cursor implements KeyboardHandler {
        draw(direction.dColumn, direction.dRow);
     }
 
-    public Direction checkForEdges(Direction direction){
+    private Direction checkForEdges(Direction direction){
         switch (direction) {
             case RIGHT:
-                if (pos.getColumn() == grid.numberOfColumns()-1) {
+                if (pos.getColumn() == visualGrid.numberOfColumns()-1) {
                     direction = STILL;
                 }
                 break;
@@ -62,7 +67,7 @@ public class  Cursor implements KeyboardHandler {
                 }
                 break;
             case DOWN:
-                if (pos.getRow() == grid.numberOfRows()-1) {
+                if (pos.getRow() == visualGrid.numberOfRows()-1) {
                     direction = STILL;
                 }
                 break;
@@ -77,33 +82,36 @@ public class  Cursor implements KeyboardHandler {
 
         }
 
-    public void paint(){
+    /**Change the value of the respective boolean on Keyboard press**/
+    private void paint(){
         isPainting=true;
     }
 
-    public void clear(){
-        clear=true;
+    private void clear(){
+        isWiping=true;
     }
 
-    public void delete(){
+    private void delete(){
         isDeleting=true;
     }
 
-    public void save(){
+    private void save(){
         isSaving=true;
     }
 
-    public void load(){
+    private void load(){
         isLoading=true;
     }
 
+
+    /**Getters for the boolean**/
     public boolean isPainting() {
         return isPainting;
 
     }
 
-    public boolean isClearing() {
-        return clear;
+    public boolean isWiping() {
+        return isWiping;
     }
 
     public boolean isDeleting() {
@@ -118,38 +126,32 @@ public class  Cursor implements KeyboardHandler {
         return isSaving;
     }
 
+
+    /**Getter for the position**/
     public Position getPos() {
         return pos;
     }
 
+
+    /**Reset the value of the boolean after the action is done**/
     public void resetPainting() {
-        if (isPainting){
             isPainting=false;
-        }
     }
 
-    public void resetClear() {
-        if(clear){
-            clear=false;
-        }
+    public void resetWiping() {
+            isWiping=false;
     }
 
     public void resetDeleting() {
-        if(isDeleting){
             isDeleting=false;
-        }
     }
 
     public void resetSaving() {
-        if(isSaving){
             isSaving=false;
-        }
     }
 
     public void resetLoading() {
-        if(isLoading){
             isLoading=false;
-        }
     }
 
     @Override
@@ -207,13 +209,6 @@ public class  Cursor implements KeyboardHandler {
             this.dRow = dRow;
         }
 
-        public int getdColumn() {
-            return dColumn;
-        }
-
-        public int getdRow() {
-            return dRow;
-        }
     }
 
 

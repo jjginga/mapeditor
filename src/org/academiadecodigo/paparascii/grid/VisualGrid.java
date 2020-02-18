@@ -2,13 +2,13 @@ package org.academiadecodigo.paparascii.grid;
 
 import org.academiadecodigo.paparascii.graphics.Line;
 
-public class Grid extends Field {
+public class VisualGrid extends Field {
 
     private int cellSize=10;
     private Line[] verticalLines;
     private Line[] horizontalLines;
 
-    public Grid(int width, int height){
+    public VisualGrid(int width, int height){
         super(width, height);
         verticalLines();
         horizontalLines();
@@ -27,7 +27,7 @@ public class Grid extends Field {
         return (this.getHeight()/cellSize);
     }
 
-    public void verticalLines(){
+    private void verticalLines(){
         int x = PADDING;
         verticalLines = new Line[numberOfColumns()-1];
 
@@ -36,7 +36,7 @@ public class Grid extends Field {
         }
     }
 
-    public void horizontalLines(){
+    private void horizontalLines(){
         int y = PADDING;
         horizontalLines = new Line[numberOfRows()-1];
 
@@ -45,7 +45,7 @@ public class Grid extends Field {
         }
     }
 
-    public void drawLines(){
+    private void drawLines(){
         for (Line horizontalLine : horizontalLines) {
             horizontalLine.draw();
         }
