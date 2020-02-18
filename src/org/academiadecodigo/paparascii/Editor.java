@@ -1,8 +1,5 @@
 package org.academiadecodigo.paparascii;
 
-import org.academiadecodigo.paparascii.simplegraphics.keyboard.Keyboard;
-import org.academiadecodigo.paparascii.simplegraphics.keyboard.KeyboardEvent;
-import org.academiadecodigo.paparascii.simplegraphics.keyboard.KeyboardEventType;
 
 
 public class Editor {

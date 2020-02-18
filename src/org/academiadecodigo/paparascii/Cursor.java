@@ -1,11 +1,12 @@
 package org.academiadecodigo.paparascii;
 
-import org.academiadecodigo.paparascii.simplegraphics.graphics.Color;
-import org.academiadecodigo.paparascii.simplegraphics.graphics.Rectangle;
-import org.academiadecodigo.paparascii.simplegraphics.keyboard.Keyboard;
-import org.academiadecodigo.paparascii.simplegraphics.keyboard.KeyboardEvent;
-import org.academiadecodigo.paparascii.simplegraphics.keyboard.KeyboardEventType;
-import org.academiadecodigo.paparascii.simplegraphics.keyboard.KeyboardHandler;
+
+import org.academiadecodigo.simplegraphics.graphics.Color;
+import org.academiadecodigo.simplegraphics.graphics.Rectangle;
+import org.academiadecodigo.simplegraphics.keyboard.Keyboard;
+import org.academiadecodigo.simplegraphics.keyboard.KeyboardEvent;
+import org.academiadecodigo.simplegraphics.keyboard.KeyboardEventType;
+import org.academiadecodigo.simplegraphics.keyboard.KeyboardHandler;
 
 import java.io.*;
 

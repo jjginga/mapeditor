@@ -1,6 +1,7 @@
 package org.academiadecodigo.paparascii;
 
-import org.academiadecodigo.paparascii.simplegraphics.graphics.Rectangle;
+
+import org.academiadecodigo.simplegraphics.graphics.Rectangle;
 
 public class Factory {
 
