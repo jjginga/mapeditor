@@ -5,6 +5,8 @@ import org.academiadecodigo.paparascii.simplegraphics.graphics.Rectangle;
 import org.academiadecodigo.paparascii.simplegraphics.keyboard.KeyboardEvent;
 import org.academiadecodigo.paparascii.simplegraphics.keyboard.KeyboardHandler;
 
+import java.io.*;
+
 import static org.academiadecodigo.paparascii.Cursor.Direction.STILL;
 
 
@@ -13,24 +15,23 @@ public class  Cursor implements KeyboardHandler {
     private Position pos;
     private Rectangle square;
     private VisualGrid visualGrid;
-    
-    private boolean isPainting;
-    private boolean isWiping;
-    private boolean isDeleting;
-    private boolean isSaving;
-    private boolean isLoading;
+    private Drawings drawings;
+    private Factory factory;
+    private String file_path="resources/memory1024";
 
     public Cursor(int column, int row, VisualGrid visualGrid){
 
-        //get position from factory
 
-        pos = new Position(column,row);
         this.visualGrid = visualGrid;
+        drawings = new Drawings();
+        factory = new Factory(visualGrid);
 
-        //get square from factory
-        square= new Rectangle(visualGrid.columnToX(visualGrid.numberOfColumns()/2), visualGrid.rowToY(visualGrid.numberOfRows()/2), visualGrid.getCellSize(), visualGrid.getCellSize());
+        pos = factory.getPosition(column,row);
+        square= factory.getSquare(pos);
         square.setColor(Color.GREEN);
         square.fill();
+
+
 
     }
 
@@ -81,49 +82,80 @@ public class  Cursor implements KeyboardHandler {
 
         }
 
-    /**Change the value of the respective boolean on Keyboard press**/
     private void paint(){
-        isPainting=true;
+
+        Position key = factory.getPosition(pos);
+        drawings.add(key, factory.getSquare(pos));
+        drawings.getSquare(key).fill();
     }
 
-    private void clear(){
-        isWiping=true;
+    private void wipe(){
+
+        for (Position key : drawings) {
+            drawings.getSquare(key).delete();
+        }
+        drawings.wipe();
     }
 
     private void delete(){
-        isDeleting=true;
+
+        for (Position key : drawings) {
+            if (key.equals(pos)){
+                drawings.getSquare(key).delete();
+                drawings.delete(key);
+            }
+        }
     }
 
     private void save(){
-        isSaving=true;
+        try {
+
+            BufferedWriter bWriter = new BufferedWriter(new FileWriter(file_path, false));
+            for (Position position : drawings) {
+                bWriter.write(position.toString()+"\n");
+            }
+
+            bWriter.flush();
+            bWriter.close();
+
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     private void load(){
-        isLoading=true;
+        wipe();
+
+        try{
+
+            BufferedReader bReader = new BufferedReader(new FileReader(file_path));
+
+            String line;
+            String[] values;
+            Position pos;
+            Rectangle square;
+
+            while((line = bReader.readLine()) != null) {
+                values=line.split(" ");
+                pos=new Position(Integer.parseInt(values[0]),Integer.parseInt(values[1]));
+                square = factory.getSquare(pos);
+                drawings.add(pos,square);
+            }
+            bReader.close();
+
+            for (Position key : drawings) {
+                drawings.getSquare(key).fill();
+            }
+
+
+
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
 
-    /**Getters for the boolean**/
-    public boolean isPainting() {
-        return isPainting;
 
-    }
-
-    public boolean isWiping() {
-        return isWiping;
-    }
-
-    public boolean isDeleting() {
-        return isDeleting;
-    }
-
-    public boolean isLoading() {
-        return isLoading;
-    }
-
-    public boolean isSaving() {
-        return isSaving;
-    }
 
 
     /**Getter for the position**/
@@ -132,26 +164,7 @@ public class  Cursor implements KeyboardHandler {
     }
 
 
-    /**Reset the value of the boolean after the action is done**/
-    public void resetPainting() {
-            isPainting=false;
-    }
 
-    public void resetWiping() {
-            isWiping=false;
-    }
-
-    public void resetDeleting() {
-            isDeleting=false;
-    }
-
-    public void resetSaving() {
-            isSaving=false;
-    }
-
-    public void resetLoading() {
-            isLoading=false;
-    }
 
     @Override
     public void keyPressed(KeyboardEvent e) {
@@ -173,7 +186,7 @@ public class  Cursor implements KeyboardHandler {
                 paint();
                 break;
             case KeyboardEvent.KEY_W:
-                clear();
+                wipe();
                 break;
             case KeyboardEvent.KEY_D:
                 delete();

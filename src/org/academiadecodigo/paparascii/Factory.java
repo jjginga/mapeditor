@@ -19,4 +19,10 @@ public class Factory {
         return new Position(pos);
     }
 
+    public Position getPosition(int column, int row) {
+        return new Position(column, row);
+    }
+
+
+
 }
