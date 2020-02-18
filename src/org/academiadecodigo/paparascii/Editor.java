@@ -1,13 +1,9 @@
 package org.academiadecodigo.paparascii;
 
-import org.academiadecodigo.paparascii.cursor.Cursor;
-import org.academiadecodigo.paparascii.graphics.Rectangle;
-import org.academiadecodigo.paparascii.grid.Factory;
-import org.academiadecodigo.paparascii.grid.VisualGrid;
-import org.academiadecodigo.paparascii.grid.Position;
-import org.academiadecodigo.paparascii.keyboard.Keyboard;
-import org.academiadecodigo.paparascii.keyboard.KeyboardEvent;
-import org.academiadecodigo.paparascii.keyboard.KeyboardEventType;
+import org.academiadecodigo.paparascii.simplegraphics.graphics.Rectangle;
+import org.academiadecodigo.paparascii.simplegraphics.keyboard.Keyboard;
+import org.academiadecodigo.paparascii.simplegraphics.keyboard.KeyboardEvent;
+import org.academiadecodigo.paparascii.simplegraphics.keyboard.KeyboardEventType;
 
 import java.io.*;
 

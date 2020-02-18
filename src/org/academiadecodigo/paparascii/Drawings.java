@@ -1,7 +1,6 @@
 package org.academiadecodigo.paparascii;
 
-import org.academiadecodigo.paparascii.graphics.Rectangle;
-import org.academiadecodigo.paparascii.grid.Position;
+import org.academiadecodigo.paparascii.simplegraphics.graphics.Rectangle;
 
 import java.util.*;
 
