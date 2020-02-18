@@ -2,11 +2,14 @@ package org.academiadecodigo.paparascii;
 
 import org.academiadecodigo.paparascii.simplegraphics.graphics.Color;
 import org.academiadecodigo.paparascii.simplegraphics.graphics.Rectangle;
+import org.academiadecodigo.paparascii.simplegraphics.keyboard.Keyboard;
 import org.academiadecodigo.paparascii.simplegraphics.keyboard.KeyboardEvent;
+import org.academiadecodigo.paparascii.simplegraphics.keyboard.KeyboardEventType;
 import org.academiadecodigo.paparascii.simplegraphics.keyboard.KeyboardHandler;
 
 import java.io.*;
 
+import static java.lang.Enum.valueOf;
 import static org.academiadecodigo.paparascii.Cursor.Direction.STILL;
 
 
@@ -19,10 +22,13 @@ public class  Cursor implements KeyboardHandler {
     private Drawings drawings;
     private Factory factory;
     private String file_path="resources/memory1024";
+    private MyKeyboard myKeyboard;
+    private MyColors color = MyColors.MYBLACK;
 
 
     //CONSTRUCTOR
     public Cursor(int column, int row, VisualGrid visualGrid){
+
 
 
         this.visualGrid = visualGrid;
@@ -31,10 +37,10 @@ public class  Cursor implements KeyboardHandler {
 
         pos = factory.getPosition(column,row);
         square= factory.getSquare(pos);
-        square.setColor(Color.GREEN);
+        square.setColor(color.getColor());
         square.fill();
 
-
+        myKeyboard = new MyKeyboard(this);
 
     }
 
@@ -99,6 +105,7 @@ public class  Cursor implements KeyboardHandler {
 
         Position key = factory.getPosition(pos);
         drawings.add(key, factory.getSquare(pos));
+        drawings.getSquare(key).setColor(color.getColor());
         drawings.getSquare(key).fill();
     }
 
@@ -121,14 +128,27 @@ public class  Cursor implements KeyboardHandler {
         }
     }
 
+    private void changeColor(){
+
+        if(color.ordinal()==MyColors.values().length-1){
+            color=MyColors.values()[0];
+            square.setColor(color.getColor());
+            return;
+        }
+
+        color=MyColors.values()[color.ordinal()+1];
+        square.setColor(color.getColor());
+    }
+
     //SAVING AND LOADING
     private void save(){
         try {
 
+
             BufferedWriter bWriter = new BufferedWriter(new FileWriter(file_path, false));
 
             for (Position key : drawings) {
-                bWriter.write(key.toString()+"\n");
+                bWriter.write(key.toString()+" "+color.getValue(drawings.getSquare(key).getColor())+"\n");
             }
 
             bWriter.flush();
@@ -155,16 +175,12 @@ public class  Cursor implements KeyboardHandler {
                 values=line.split(" ");
                 posLoad=factory.getPosition(Integer.valueOf(values[0]),Integer.valueOf(values[1]));
                 square = factory.getSquare(posLoad);
+                square.setColor(MyColors.values()[Integer.valueOf(values[2])].getColor());
+                square.fill();
                 drawings.add(posLoad,square);
             }
 
             bReader.close();
-
-            for (Position key : drawings) {
-                drawings.getSquare(key).fill();
-            }
-
-
 
         } catch (IOException e) {
             System.out.println(e.getMessage());
@@ -202,6 +218,9 @@ public class  Cursor implements KeyboardHandler {
             case KeyboardEvent.KEY_L:
                 load();
                 break;
+            case KeyboardEvent.KEY_C:
+                changeColor();
+                break;
         }
 
     }
@@ -230,5 +249,97 @@ public class  Cursor implements KeyboardHandler {
 
     }
 
+    //Keyboard controls
+    public class MyKeyboard{
 
+
+        public MyKeyboard(KeyboardHandler handler){
+        Keyboard k = new Keyboard(handler);
+
+        //MOVEMENT
+        KeyboardEvent eventRight = new KeyboardEvent();
+        eventRight.setKey(KeyboardEvent.KEY_RIGHT);
+        eventRight.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
+        k.addEventListener(eventRight);
+
+        KeyboardEvent eventLeft = new KeyboardEvent();
+        eventLeft.setKey(KeyboardEvent.KEY_LEFT);
+        eventLeft.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
+        k.addEventListener(eventLeft);
+
+        KeyboardEvent eventUp = new KeyboardEvent();
+        eventUp.setKey(KeyboardEvent.KEY_UP);
+        eventUp.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
+        k.addEventListener(eventUp);
+
+        KeyboardEvent eventDown = new KeyboardEvent();
+        eventDown.setKey(KeyboardEvent.KEY_DOWN);
+        eventDown.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
+        k.addEventListener(eventDown);
+
+        //CONTROLS
+        KeyboardEvent eventFill = new KeyboardEvent();
+        eventFill.setKey(KeyboardEvent.KEY_SPACE);
+        eventFill.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
+        k.addEventListener(eventFill);
+
+        KeyboardEvent eventDelete = new KeyboardEvent();
+        eventDelete.setKey(KeyboardEvent.KEY_D);
+        eventDelete.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
+        k.addEventListener(eventDelete);
+
+        KeyboardEvent eventWipe = new KeyboardEvent();
+        eventWipe.setKey(KeyboardEvent.KEY_W);
+        eventWipe.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
+        k.addEventListener(eventWipe);
+
+
+        KeyboardEvent eventSave = new KeyboardEvent();
+        eventSave.setKey(KeyboardEvent.KEY_S);
+        eventSave.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
+        k.addEventListener(eventSave);
+
+        KeyboardEvent eventLoad = new KeyboardEvent();
+        eventLoad.setKey(KeyboardEvent.KEY_L);
+        eventLoad.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
+        k.addEventListener(eventLoad);
+
+        KeyboardEvent eventChangeColor = new KeyboardEvent();
+        eventChangeColor.setKey(KeyboardEvent.KEY_C);
+        eventChangeColor.setKeyboardEventType(KeyboardEventType.KEY_PRESSED);
+        k.addEventListener(eventChangeColor);
+        }
+    }
+
+
+    //Colors
+    public enum MyColors {
+
+        MYBLACK(Color.BLACK),
+        MYRED(Color.RED),
+        MYGREEN(Color.GREEN),
+        MYBLUE(Color.BLUE),
+        MYYELLOW(Color.YELLOW);
+
+        private Color color;
+
+        MyColors(Color color){
+            this.color=color;
+        }
+
+        public int getValue(Color color){
+            for (MyColors myColors : MyColors.values()) {
+                if(myColors.getColor()==color){
+                    return myColors.ordinal();
+                }
+            }
+
+            return -1;
+        }
+
+        public Color getColor() {
+            return color;
+        }
+
+    }
 }
