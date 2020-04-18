@@ -1,7 +1,7 @@
 package org.academiadecodigo.paparascii;
 
 
-public class Tester {
+public class App {
 
     public static void main(String[] args) {
 

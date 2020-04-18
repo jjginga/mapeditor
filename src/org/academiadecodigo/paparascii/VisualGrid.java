@@ -7,7 +7,7 @@ import org.academiadecodigo.simplegraphics.graphics.Rectangle;
 public class VisualGrid {
 
     public static final int PADDING = 10;
-    private int cellSize=20;
+    private int cellSize=10;
     private int width;
     private int height;
     private Rectangle canvas;
